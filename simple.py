@@ -20,8 +20,8 @@ def main():
     app = QApplication(sys.argv)
 
     w = QWidget()
-    w.resize(250, 200)
-    w.move(300, 300)
+    w.resize(500, 200)
+    w.move(90, 300)
 
     w.setWindowTitle('Hello Simple')
     w.show()

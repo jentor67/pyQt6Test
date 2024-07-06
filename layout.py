@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import sys
 from PyQt6.QtWidgets import (
-        QApplication, QMainWindow, QWidget, QVBoxLayout)
+        QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout)
 from PyQt6.QtGui import QPalette, QColor
 
 
@@ -19,35 +19,30 @@ class Color(QWidget):
 
 class MainWindow(QMainWindow):
 
-    '''
-    def __init__(self):
-        super(MainWindow, self).__init__()
-
-        self.setWindowTitle("My App")
-    '''
-    '''
-    def __init__(self):
-        super(MainWindow, self).__init__()
-
-        self.setWindowTitle("My App")
-
-        widget = Color('red')
-        self.setCentralWidget(widget)
-    '''
 
     def __init__(self):
         super(MainWindow, self).__init__()
 
         self.setWindowTitle("My App")
+        self.resize(900,500)
+        self.move(90,300)
 
-        layout = QVBoxLayout()
 
-        layout.addWidget(Color('red'))
-        layout.addWidget(Color('green'))
-        layout.addWidget(Color('blue'))
+        layoutH = QHBoxLayout()
+        layoutH.addWidget(Color('yellow'))
+        layoutH.addWidget(Color('purple'))
+
+
+        layoutV = QVBoxLayout()
+        layoutV.addLayout(layoutH)
+
+        layoutV.addWidget(Color('red'))
+        layoutV.addWidget(Color('green'))
+        layoutV.addWidget(Color('blue'))
+
 
         widget = QWidget()
-        widget.setLayout(layout)
+        widget.setLayout(layoutV)
         self.setCentralWidget(widget)
 
 
