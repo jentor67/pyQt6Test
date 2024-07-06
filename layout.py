@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import sys
+from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtWidgets import (
         QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout)
 from PyQt6.QtGui import QPalette, QColor
@@ -24,7 +25,8 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
 
         self.setWindowTitle("My App")
-        self.resize(900,500)
+        #self.resize(900,500)
+        self.setFixedSize(QSize(400,500))
         self.move(90,300)
 
 
