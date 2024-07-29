@@ -1,0 +1,4 @@
+<config>
+	<dirIn>/home/jmajor/gitHub/pyQt6Test/pickAfile/dataIn</dirIn>
+	<dirOut>/home/jmajor/gitHub/pyQt6Test/pickAfile/dataOut</dirOut>
+</config>
