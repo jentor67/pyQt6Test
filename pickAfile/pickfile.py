@@ -20,30 +20,47 @@ class Main(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Pick a file")
-        self.setFixedWidth(750)
+        self.setFixedWidth(950)
         self.setFixedHeight(500)
         self.setStyleSheet("background-color: white;");
 
-        layout =QFormLayout()
-        layout.setVerticalSpacing(33)
-        layout.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
-        
+        ##  button ## 
         btn = QPushButton(self)
-        btn.setText("Open file dialog")
+        btn.setText("Choose File")
         self.setCentralWidget(btn)
         btn.clicked.connect(self.open_dialog)
         btn.setStyleSheet(
                 "background-color: yellow;"
-                "border: 3px solid green;");
+                "border: 3px solid green;"
+                "font-size: 12pt;")
+        btn.setMaximumWidth(100)
 
+        ## label ##
         self.NameLabel = QLabel()
         self.NameLabel.setText("NONE")
         self.NameLabel.setStyleSheet(
                 "background-color: pink;"
-                "border: 3px solid red;");
+                "border: 3px solid red;"
+                "font-size: 12pt;")
 
-        layout.addRow("Pick File",btn)
-        layout.addRow("File name: ",self.NameLabel)
+        TitleButton = QLabel()
+        TitleButton.setText("Pick File")
+        TitleButton.setStyleSheet(
+                "font-size: 14pt;"
+                "font: bold;")
+        TitleLabel = QLabel()
+        TitleLabel.setText("File name:")
+        TitleLabel.setStyleSheet(
+                "font-size: 14pt;"
+                "font: bold;")
+
+        ## layout ##
+        layout =QFormLayout()
+        layout.setVerticalSpacing(33)
+        layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)
+        #layout.addRow(TitleButton,btn)
+        layout.addRow("",btn)
+        layout.addRow(TitleLabel,self.NameLabel)
 
         widget = QWidget()
         widget.setLayout(layout)
@@ -59,7 +76,6 @@ class Main(QMainWindow):
             dirIn.text,
             "All Files (*);; Python Files (*.py);; PNG Files (*.png)",
         )
-        print(fname)
         self.NameLabel.setText(fname[0])
 
 if __name__ == "__main__":
@@ -68,7 +84,6 @@ if __name__ == "__main__":
     root = tree.getroot()
     dirIn = tree.find("dirIn")
     dirOut = tree.find("dirOut")
-    print(dirIn.text)
 
     app = QApplication(sys.argv)
     main_gui = Main()
