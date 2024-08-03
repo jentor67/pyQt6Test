@@ -4,9 +4,10 @@ import csv
 import os, fnmatch
 import subprocess as SP
 import warnings
+import re
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-dirIn ="/home/jmajor/Music/Vangelis/Portraits (So Long Ago, So Clear)"
+dirIn ="/home/jmajor/Music/Vangelis/Portraits (So Long Ago, So Clear)/"
 
 streamList = "codec_name,sample_rate,duration,bit_rate"
 streamTAGList = "" #"ARTIST,track,TITLE"
@@ -19,6 +20,14 @@ DFColumns = List.split(",")
 if "" in DFColumns :
     DFColumns.remove("")
 
+cmd="ffprobe -v error -show_streams "
+cmd += re.escape(dirIn)
+cmd += re.escape("07 I'll Find My Way Home.wma")
+cmd = cmd.replace("'","\\'")
+print(cmd)
+SP.run(cmd, shell = True, executable="/bin/bash")
+
+'''
 df = pd.DataFrame(columns=DFColumns)
 # show multiple values in packets with csv
 commandPrefix = "ffprobe -v error -show_entries " 
@@ -69,3 +78,4 @@ for filename in os.listdir(dirIn):
         df.loc[len(df)] = masterList
        
 print(df)
+'''

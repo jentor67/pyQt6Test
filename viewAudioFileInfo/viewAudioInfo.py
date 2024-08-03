@@ -27,7 +27,7 @@ class Main(QMainWindow):
         self.status_bar = self.statusBar()
         self.status_bar.showMessage('Ready', 5000)
         self.setWindowTitle("Pick a file")
-        self.setFixedWidth(1200)
+        self.setFixedWidth(1500)
         self.setFixedHeight(750)
         self.setStyleSheet("background-color: white;");
 
@@ -35,11 +35,11 @@ class Main(QMainWindow):
         buttonCSS = "background-color: yellow; \
                 border: 3px solid green; \
                 font-size: 12pt;"
-        buttonWidth = 100
+        buttonWidth = 150
 
         ##  Pick button ## 
         pickBTN = QPushButton(self)
-        pickBTN.setText("Choose File")
+        pickBTN.setText("Choose Folder")
         pickBTN.clicked.connect(self.open_dialog)
         pickBTN.setStyleSheet( buttonCSS )
         pickBTN.setMaximumWidth(buttonWidth)
@@ -47,7 +47,8 @@ class Main(QMainWindow):
         ##  copy button ## 
         copyBTN = QPushButton(self)
         copyBTN.setText("View Info")
-        copyBTN.clicked.connect(self.view_info)
+        self.folder ="" #"/home/jmajor/Music/Boy2"
+        copyBTN.clicked.connect(lambda: self.view_info(self.folder))
         copyBTN.setStyleSheet( buttonCSS )
         copyBTN.setMaximumWidth(buttonWidth)
 
@@ -70,56 +71,53 @@ class Main(QMainWindow):
                 "font-size: 14pt;"
                 "font: bold;")
 
-        ## Data frame
+        ## Create QTableView
         self.table = QTableView()
-
-        ## create data frame
-        self.audioDF = AudioDataFrame()
-        data = self.audioDF.getDataFrame("/)
-        ###
-       
-        self.model = TableModel(data)
-        self.table.setModel(self.model)
         self.setCentralWidget(self.table)
         self.setGeometry(600, 100, 400, 200)
+        #self.table.setColumnWidth(1,150)
 
         ## layout ##
-        layout =QFormLayout()
-        layout.setVerticalSpacing(33)
-        layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)
-        layout.addRow("",pickBTN)
-        layout.addRow(TitleLabel,self.NameLabel)
-        layout.addRow("",copyBTN)
-        layout.addRow("",self.table)
+        self.layout =QFormLayout()
+        self.layout.setVerticalSpacing(33)
+        self.layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.layout.addRow("",pickBTN)
+        self.layout.addRow(TitleLabel,self.NameLabel)
+        self.layout.addRow("",copyBTN)
+        self.layout.addRow("",self.table)
 
-        widget = QWidget()
-        widget.setLayout(layout)
-        self.setCentralWidget(widget)
+        self.widget = QWidget()
+        self.widget.setLayout(self.layout)
+        self.setCentralWidget(self.widget)
 
 
-    def view_info(self):
-        ## view info of audio file ##
-        command = "cp " + "'" + str(dirIn.text) + "/" + \
-            str(self.NameLabel.text()) + "' " + str(dirOut.text) 
-        SP.run(command, shell = True, executable="/bin/bash")
-        self.statusBar().showMessage('File "' + \
-                str(self.NameLabel.text()) + '" copied to dir ' + \
-                str(dirOut.text), 3000)
+    def view_info(self,searchFolder):
+        ## view info of audio files in folder ##
+
+        ## call AudioDataFrame class
+        self.audioDF = AudioDataFrame()
+
+        ## create data frame for folder ##
+        data = self.audioDF.getDataFrame(searchFolder)
+       
+        self.model = TableModel(data)
+
+        ## populate self.table with self.model ##
+        self.table.setModel(self.model)
+        self.table.setColumnWidth(0,300)
 
     #@pyqtSlot()
     def open_dialog(self):
-        self.statusBar().showMessage('Picking file...', 3000)
-        fname = QFileDialog.getOpenFileName(
+        self.statusBar().showMessage('Picking a folder...', 3000)
+        folder = QFileDialog.getExistingDirectory(
             self,
-            "Open File",
-            dirIn.text,
-            "All Files (*);; Python Files (*.py);; PNG Files (*.png)",
+            "Select Directory",
+            directory="/home/jmajor/Music"
         )
-        filename = fname[0].split("/")[-1]
-        self.NameLabel.setText(filename)
+        self.folder=folder
 
-        self.statusBar().showMessage('Picked file "' + \
-                str(filename) + '"', 3000)
+        self.statusBar().showMessage('Picked folder "' + \
+                str(folder) + '"', 3000)
 
 if __name__ == "__main__":
     ## access config file**
